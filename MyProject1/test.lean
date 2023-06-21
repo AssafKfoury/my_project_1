@@ -42,7 +42,23 @@ theorem test (p q : Prop) (hp : p) (hq : q) : p ∧ q ∧ p := by
   exact hq
   exact hp
   done 
- 
+
+theorem test1 (p q : Prop) (hp : p) (hq : q) : p ∧ q ∧ p := by 
+  constructor ; exact hp
+  constructor ; exact hq ; exact hp  
+
+theorem test2 (p q : Prop) (hp : p) (hq : q) : p ∧ q ∧ p := by  
+  apply And.intro 
+  case left => exact hp 
+  case right =>
+    apply And.intro
+    case left => exact hq
+    case right => exact hp
+
+theorem test3 (p q : Prop) (hp : p) (hq : q) : p ∧ q ∧ p := by
+  apply And.intro hp _ 
+  exact And.intro hq hp 
+
 
 #check easy1
 #check lem1     
