@@ -41,4 +41,55 @@ theorem ex4 : p ∨ q → q ∨ p := by
   assumption
   apply Or.inl
   assumption
-  done -- fails with an error here if there are unsolvable goals
+  done -- fails with an error here if there are unsolvable goals 
+
+theorem ex5 : p ∨ q → q ∨ p := by
+  intro h
+  cases h
+  focus -- instructs Lean to `focus` on the first goal,
+    apply Or.inr
+    assumption
+    -- it will fail if there are still unsolvable goals here
+  focus
+    apply Or.inl
+    assumption  
+
+theorem ex6 : p ∨ q → q ∨ p := by
+  intro h
+  cases h
+  -- You can still use curly braces and semicolons instead of
+  -- whitespace sensitive notation as in the previous example
+  { apply Or.inr;
+    assumption
+    -- It will fail if there are unsolved goals
+  }
+  { apply Or.inl;
+    assumption
+  } 
+
+-- Many tactics tag subgoals. The tactic `cases` tag goals using constructor names.
+-- The tactic `case tag => tactics` instructs Lean to solve the goal
+-- with the matching tag.
+theorem ex7 : p ∨ q → q ∨ p := by
+  intro h
+  cases h
+  case inr =>
+    apply Or.inl
+    assumption
+  case inl =>
+    apply Or.inr
+    assumption
+
+-- Same example for curly braces and semicolons aficionados
+theorem ex8 : p ∨ q → q ∨ p := by {
+  intro h;
+  cases h;
+  case inr => {
+    apply Or.inl;
+    assumption
+  }
+  case inl => {
+    apply Or.inr;
+    assumption
+  }
+}
